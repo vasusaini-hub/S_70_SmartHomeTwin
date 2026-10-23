@@ -1,0 +1,594 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080909">
+  <title>SmartTwin | Smart Home Dashboard</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- LOGIN / SIGNUP: PRESERVED -->
+  <section class="auth-screen" id="authScreen">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="brand-icon">⌂</span>
+        <span>Smart<span class="accent">Twin</span></span>
+      </div>
+
+      <div id="loginPanel">
+        <p class="eyebrow">WELCOME HOME</p>
+        <h1>Welcome back</h1>
+        <p class="auth-description">Sign in to manage your smart home.</p>
+
+        <form id="loginForm">
+          <label for="loginEmail">Email address</label>
+          <input id="loginEmail" name="email" type="email"
+            autocomplete="email" placeholder="you@example.com" required>
+
+          <label for="loginPassword">Password</label>
+          <input id="loginPassword" name="password" type="password"
+            autocomplete="current-password" placeholder="Your password" required>
+
+          <button class="auth-submit" type="submit">Log in</button>
+          <p class="auth-message" id="loginMessage" aria-live="polite"></p>
+        </form>
+
+        <p class="auth-switch">
+          New here?
+          <button type="button" id="showSignup">Create an account</button>
+        </p>
+      </div>
+
+      <div id="signupPanel" hidden>
+        <p class="eyebrow">GET STARTED</p>
+        <h1>Create account</h1>
+        <p class="auth-description">Make your home smarter.</p>
+
+        <form id="signupForm">
+          <label for="signupName">Full name</label>
+          <input id="signupName" name="name" type="text"
+            autocomplete="name" maxlength="80" placeholder="Your name" required>
+
+          <label for="signupEmail">Email address</label>
+          <input id="signupEmail" name="email" type="email"
+            autocomplete="email" placeholder="you@example.com" required>
+
+          <label for="signupPassword">Password</label>
+          <input id="signupPassword" name="password" type="password"
+            autocomplete="new-password" minlength="8"
+            placeholder="At least 8 characters" required>
+
+          <button class="auth-submit" type="submit">Create account</button>
+          <p class="auth-message" id="signupMessage" aria-live="polite"></p>
+        </form>
+
+        <p class="auth-switch">
+          Already registered?
+          <button type="button" id="showLogin">Log in</button>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SMART HOME DASHBOARD -->
+  <div class="app-shell" id="appShell" hidden>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">⌂</span>
+        <span>Smart<span class="accent">Twin</span></span>
+      </div>
+
+      <p class="side-label">YOUR SMART HOME</p>
+
+      <nav class="room-nav" aria-label="Room filters">
+        <button class="room-link active" data-room="All">⌂ &nbsp; Overview</button>
+        <button class="room-link" data-room="Living Room">▦ &nbsp; Living Room</button>
+        <button class="room-link" data-room="Bedroom">▣ &nbsp; Bedroom</button>
+        <button class="room-link" data-room="Kitchen">◫ &nbsp; Kitchen</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <span class="online-dot"></span>
+        <div>
+          <strong>System online</strong>
+          <small>Virtual home system</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- TOP NAVIGATION -->
+      <header class="topbar reference-topbar">
+        <button class="mobile-menu" id="mobileMenu" type="button"
+          aria-label="Navigation menu">☰</button>
+
+        <div class="current-date" id="currentDate">SMART HOME</div>
+
+        <nav class="top-room-nav" aria-label="Quick room navigation">
+          <button class="top-room active" type="button" data-room="Living Room">Living room</button>
+          <button class="top-room" type="button" data-room="Bedroom">Bedroom</button>
+          <button class="top-room" type="button" data-room="Kitchen">Kitchen</button>
+          <button class="top-room" type="button" data-room="All">All rooms</button>
+        </nav>
+
+        <div class="profile-circle" id="profileCircle" aria-label="Home profile">⌂</div>
+        <button class="logout-btn" id="logoutBtn">Log out ↗</button>
+      </header>
+
+      <!-- DASHBOARD DEVICE LAYOUT -->
+      <!-- app.js uses this ID to handle appliance toggle clicks -->
+      <section class="control-layout" id="applianceGrid">
+
+        <!-- LEFT COLUMN -->
+        <div class="left-column">
+
+          <article class="weather-card">
+            <div class="weather-icon">☀️</div>
+            <div class="weather-temp">31°</div>
+            <h3>A bright day at home</h3>
+            <p>Keep your home comfortable and energy-aware.</p>
+            <span class="weather-note">✦ SMART LIVING</span>
+          </article>
+
+          <article class="music-card">
+            <div class="music-art">
+              <div class="music-disc">♫</div>
+              <span>HOME ATMOSPHERE</span>
+            </div>
+            <div class="music-info">
+              <div>
+                <h3>Relax at home</h3>
+                <p>Your personal comfort space</p>
+              </div>
+              <span class="music-heart">♥</span>
+            </div>
+            <div class="music-progress"><span></span></div>
+            <div class="music-controls">
+              <span>◀</span>
+              <span class="play-button">▶</span>
+              <span>▶|</span>
+            </div>
+          </article>
+
+          <article class="mini-panel electricity-card">
+            <div class="mini-panel-heading">
+              <div>
+                <span class="panel-kicker">ENERGY</span>
+                <h3>Electricity</h3>
+              </div>
+              <span class="mini-pill">Today ⌄</span>
+            </div>
+
+            <svg class="energy-chart" viewBox="0 0 280 95"
+              role="img" aria-label="Decorative electricity usage graph">
+              <defs>
+                <linearGradient id="energyGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ff8a3d" stop-opacity=".35"/>
+                  <stop offset="100%" stop-color="#ff8a3d" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M4 72 C30 18 50 83 80 57 S125 17 145 45 S184 76 208 36 S246 25 276 14 L276 94 L4 94 Z"
+                fill="url(#energyGradient)"/>
+              <path d="M4 72 C30 18 50 83 80 57 S125 17 145 45 S184 76 208 36 S246 25 276 14"
+                fill="none" stroke="#ff8a3d" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="145" cy="45" r="5" fill="#ffb06e" stroke="#fff" stroke-width="2"/>
+            </svg>
+
+            <div class="electricity-total">
+              <strong id="miniEnergy">0 W</strong>
+              <span>Current load</span>
+            </div>
+          </article>
+
+          <article class="mini-panel wifi-card">
+            <div class="mini-panel-heading">
+              <div>
+                <span class="panel-kicker">CONNECTIVITY</span>
+                <h3>Wi-Fi</h3>
+              </div>
+              <span class="power-indicator">●</span>
+            </div>
+            <div class="wifi-graphic">⌁</div>
+            <p>Home network <span class="connected-label">Connected</span></p>
+          </article>
+
+        </div>
+
+        <!-- CENTER COLUMN -->
+        <div class="center-column">
+
+          <!-- LIGHT CONTROL: CONNECTED TO JAVA BACKEND -->
+          <article class="control-panel lighting-panel appliance-card"
+            data-name="Living Room Light" data-room="Living Room"
+            data-power="12" data-id="light">
+
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">LIVING ROOM</span>
+                <h2>Lighting</h2>
+              </div>
+              <span class="power-indicator">●</span>
+            </div>
+
+            <div class="lighting-main">
+              <div class="brightness-dial">
+                <div><span>Intensity</span><strong>80%</strong></div>
+              </div>
+
+              <div class="pendant-light">
+                <div class="lamp-cord"></div>
+                <div class="lamp-shade"></div>
+                <div class="lamp-glow"></div>
+              </div>
+
+              <div class="lighting-modes">
+                <span>Reading</span>
+                <strong>Working</strong>
+                <span>Relaxing</span>
+              </div>
+            </div>
+
+            <div class="brightness-row">
+              <span>☼</span>
+              <input type="range" min="0" max="100" value="80"
+                aria-label="Decorative brightness level">
+              <span>◐</span>
+            </div>
+
+            <div class="linked-device">
+              <span class="linked-device-icon">💡</span>
+              <div>
+                <strong>Living Room Light</strong>
+                <small>12 W · Main lighting</small>
+              </div>
+              <span class="device-status">OFF</span>
+              <button class="toggle-btn" type="button">Turn on</button>
+            </div>
+          </article>
+
+          <div class="center-lower-grid">
+
+            <!-- CAMERA: VISUAL DEMO -->
+            <article class="control-panel camera-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-kicker">SECURITY</span>
+                  <h3>Camera</h3>
+                </div>
+                <span class="power-indicator">●</span>
+              </div>
+              <div class="camera-visual">
+                <div class="camera-lens"></div>
+                <div class="camera-base"></div>
+              </div>
+              <p class="muted-small">Home monitoring</p>
+              <span class="demo-label">DEMO DEVICE</span>
+            </article>
+
+            <!-- ROBOT VACUUM: VISUAL DEMO -->
+            <article class="control-panel vacuum-panel">
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-kicker">AUTOMATION</span>
+                  <h3>Robotic vacuum</h3>
+                </div>
+                <span class="power-indicator">●</span>
+              </div>
+
+              <div class="vacuum-scene">
+                <div class="vacuum-robot">
+                  <div class="vacuum-top"></div>
+                  <div class="vacuum-sensor"></div>
+                </div>
+              </div>
+
+              <p class="muted-small">Smart cleaning concept</p>
+
+              <div class="vacuum-stats">
+                <div><span>◇</span><strong>Auto</strong><small>Mode</small></div>
+                <div><span>ϟ</span><strong>25%</strong><small>Power</small></div>
+                <div><span>◷</span><strong>15 min</strong><small>Demo time</small></div>
+              </div>
+
+              <div class="vacuum-actions">
+                <button type="button" class="demo-action">Go dock</button>
+                <button type="button" class="demo-action outline-action">Start</button>
+              </div>
+            </article>
+
+            <!-- FAN: CONNECTED TO JAVA BACKEND -->
+            <article class="control-panel fan-mini-panel appliance-card"
+              data-name="Bedroom Fan" data-room="Bedroom"
+              data-power="60" data-id="fan">
+
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-kicker">BEDROOM</span>
+                  <h3>Fan</h3>
+                </div>
+                <span class="power-indicator">●</span>
+              </div>
+
+              <div class="fan-graphic">✳</div>
+
+              <div class="mini-device-footer">
+                <span>Bedroom Fan · 60 W</span>
+                <span class="device-status">OFF</span>
+                <button class="toggle-btn" type="button">Turn on</button>
+              </div>
+            </article>
+
+            <!-- TV: CONNECTED TO JAVA BACKEND -->
+            <article class="control-panel tv-mini-panel appliance-card"
+              data-name="Television" data-room="Living Room"
+              data-power="100" data-id="tv">
+
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-kicker">LIVING ROOM</span>
+                  <h3>Television</h3>
+                </div>
+                <span class="power-indicator">●</span>
+              </div>
+
+              <div class="tv-graphic"><div></div></div>
+
+              <div class="mini-device-footer">
+                <span>TV · 100 W</span>
+                <span class="device-status">OFF</span>
+                <button class="toggle-btn" type="button">Turn on</button>
+              </div>
+            </article>
+
+            <!-- KITCHEN LIGHT: CONNECTED TO JAVA BACKEND -->
+            <article class="control-panel kitchen-light-panel appliance-card"
+              data-name="Kitchen Light" data-room="Kitchen"
+              data-power="10" data-id="kitchen-light">
+
+              <div class="panel-heading">
+                <div>
+                  <span class="panel-kicker">KITCHEN</span>
+                  <h3>Kitchen lighting</h3>
+                </div>
+                <span class="power-indicator">●</span>
+              </div>
+
+              <div class="fan-graphic">✧</div>
+
+              <div class="mini-device-footer">
+                <span>Kitchen Light · 10 W</span>
+                <span class="device-status">OFF</span>
+                <button class="toggle-btn" type="button">Turn on</button>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-column">
+
+          <!-- AIR CONDITIONER: CONNECTED TO JAVA BACKEND -->
+          <article class="control-panel ac-panel appliance-card"
+            data-name="Air Conditioner" data-room="Bedroom"
+            data-power="1500" data-id="ac">
+
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">BEDROOM</span>
+                <h2>Air Conditioning</h2>
+              </div>
+              <span class="power-indicator">●</span>
+            </div>
+
+            <div class="ac-illustration">
+              <div class="ac-vent"><span></span><span></span><span></span></div>
+              <div class="ac-airflow"></div>
+            </div>
+
+            <p class="temperature-caption">
+              ROOM TEMPERATURE <strong>20°C</strong>
+            </p>
+
+            <div class="temperature-dial">
+              <div class="temperature-inner">
+                <span>Cooling</span>
+                <strong id="temperatureValue">23°C</strong>
+                <small>Target temperature</small>
+              </div>
+              <span class="dial-knob"></span>
+            </div>
+
+            <div class="temperature-scale">
+              <span>10°C</span><span>20°C</span><span>30°C</span>
+            </div>
+
+            <div class="ac-actions-heading">Action</div>
+
+            <div class="ac-mode-grid">
+              <button class="ac-mode active" type="button" data-mode="Cooling">
+                <span>❄</span>Cooling
+              </button>
+              <button class="ac-mode" type="button" data-mode="Heating">
+                <span>♨</span>Heating
+              </button>
+              <button class="ac-mode" type="button" data-mode="Airwave">
+                <span>≋</span>Airwave
+              </button>
+            </div>
+
+            <div class="ac-bottom-stats">
+              <div><span>◷</span><strong>2</strong><small>Hours</small></div>
+              <div><span>♧</span><strong>36</strong><small>Humidity %</small></div>
+            </div>
+
+            <div class="linked-device ac-linked-device">
+              <div>
+                <strong>Air Conditioner</strong>
+                <small>1500 W · Bedroom</small>
+              </div>
+              <span class="device-status">OFF</span>
+              <button class="toggle-btn" type="button">Turn on</button>
+            </div>
+          </article>
+
+          <!-- REFRIGERATOR: CONNECTED TO JAVA BACKEND -->
+          <article class="control-panel fridge-panel appliance-card"
+            data-name="Refrigerator" data-room="Kitchen"
+            data-power="180" data-id="fridge">
+
+            <div class="panel-heading">
+              <div>
+                <span class="panel-kicker">KITCHEN</span>
+                <h3>Refrigerator</h3>
+              </div>
+              <span class="power-indicator">●</span>
+            </div>
+
+            <div class="fridge-graphic"><div></div><div></div></div>
+
+            <div class="mini-device-footer">
+              <span>180 W · Kitchen</span>
+              <span class="device-status">OFF</span>
+              <button class="toggle-btn" type="button">Turn on</button>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ORIGINAL LIVE SUMMARY -->
+      <section class="stats-grid reference-stats">
+        <article class="stat-card">
+          <div class="stat-top"><span>Current power</span><span class="stat-icon">ϟ</span></div>
+          <h2 id="currentPower">0 W</h2>
+          <p>Combined appliance load</p>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top"><span>Estimated daily energy</span><span class="stat-icon">◷</span></div>
+          <h2 id="dailyEnergy">0.00 kWh</h2>
+          <p id="dailyBill">Estimated bill: ₹0.00/day</p>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top"><span>Appliances running</span><span class="stat-icon">⌁</span></div>
+          <h2 id="runningCount">0 / 6</h2>
+          <p>Devices currently switched on</p>
+        </article>
+      </section>
+
+      <!-- ACTIVITY AND ENERGY -->
+      <section class="bottom-grid reference-bottom">
+        <article class="panel">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">RECENT ACTIVITY</p>
+              <h2>Activity history</h2>
+            </div>
+          </div>
+          <div class="activity-list" id="activityLog">
+            <p class="empty-state">No activity yet. Switch on an appliance to begin.</p>
+          </div>
+        </article>
+
+        <article class="panel energy-panel">
+          <p class="eyebrow">ENERGY INSIGHT</p>
+          <h2>Power at a glance</h2>
+          <p class="subtitle">Your active appliances contribute to the total estimated load.</p>
+          <div class="energy-meter"><div id="energyMeterFill"></div></div>
+          <div class="meter-labels">
+            <span>0 W</span><span id="meterValue">0 W</span><span>2000 W</span>
+          </div>
+          <button class="secondary-btn" id="turnAllOff" type="button">
+            Turn everything off
+          </button>
+        </article>
+      </section>
+
+      <footer>Smart Home Twin · Educational simulation · No physical devices connected</footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+
+  <!-- Small UI helpers; authentication and API logic stay in app.js -->
+  <script>
+    // Display the current date in the dashboard header.
+    const dateElement = document.getElementById("currentDate");
+    if (dateElement) {
+      dateElement.textContent = new Intl.DateTimeFormat("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric"
+      }).format(new Date()).toUpperCase();
+    }
+
+    // Quick room navigation mirrors the existing sidebar room filters.
+    document.querySelectorAll(".top-room").forEach((topButton) => {
+      topButton.addEventListener("click", () => {
+        const room = topButton.dataset.room;
+
+        document.querySelectorAll(".room-link").forEach((sideButton) => {
+          sideButton.classList.toggle("active", sideButton.dataset.room === room);
+        });
+
+        document.querySelectorAll(".top-room").forEach((button) => {
+          button.classList.toggle("active", button === topButton);
+        });
+
+        document.querySelectorAll(".appliance-card").forEach((card) => {
+          card.hidden = room !== "All" && card.dataset.room !== room;
+        });
+      });
+    });
+
+    // Demo-only AC mode selector; it does not control a physical AC.
+    document.querySelectorAll(".ac-mode").forEach((modeButton) => {
+      modeButton.addEventListener("click", () => {
+        document.querySelectorAll(".ac-mode").forEach((button) => {
+          button.classList.toggle("active", button === modeButton);
+        });
+
+        const label = document.querySelector(".temperature-inner span");
+        if (label) label.textContent = modeButton.dataset.mode;
+      });
+    });
+
+    // Keep the decorative energy card in sync with the live power summary.
+    const summaryObserver = new MutationObserver(() => {
+      const power = document.getElementById("currentPower");
+      const miniEnergy = document.getElementById("miniEnergy");
+
+      if (power && miniEnergy) {
+        miniEnergy.textContent = power.textContent;
+      }
+    });
+
+    const powerElement = document.getElementById("currentPower");
+    if (powerElement) {
+      summaryObserver.observe(powerElement, {
+        childList: true,
+        characterData: true,
+        subtree: true
+      });
+    }
+
+    // Mobile menu opens/closes the existing sidebar.
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (mobileMenu) {
+      mobileMenu.addEventListener("click", () => {
+        document.querySelector(".sidebar")?.classList.toggle("mobile-open");
+      });
+    }
+  </script>
+</body>
+</html>
