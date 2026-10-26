@@ -20,7 +20,11 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class SmartHomeTwinServer {
 
-    private static final int PORT = 8787;
+   
+private static final int PORT = Integer.parseInt(
+    System.getenv().getOrDefault("PORT", "8787")
+);
+
     private static final int SAFETY_POWER_LIMIT_WATTS = 1500;
 
     private static final Path ROOT =
@@ -84,7 +88,7 @@ public class SmartHomeTwinServer {
         initialiseDevices();
 
         HttpServer server = HttpServer.create(
-            new InetSocketAddress("127.0.0.1", PORT), 0
+            new InetSocketAddress("0.0.0.0", PORT), 0
         );
 
         server.createContext("/", SmartHomeTwinServer::handleRequest);
